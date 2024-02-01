@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz App</title>
+    <style>
+         body {
+            background-color: plum;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        #quiz {
+            text-align: center;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div id="quiz">
+        <h1>Click button to start quiz</h1>
+        <button onclick="start()" style="background-color: tan;">Start quiz</button>
+    </div>
+    
+    <script>
+        var quizContainer = document.getElementById("quiz");
+        var currentIndex = 0;
+        var correct = 0;
+        var questions = [
+            {
+                ques: 'What is the capital of France?',
+                mcq: [
+                    'London',
+                    'Paris',
+                    'Berlin',
+                    'Rome',
+                ],
+                ans: 'Paris',
+            },
+            {
+                ques: 'Which planet is known as the Red Planet?',
+                mcq: [
+                    'Venus',
+                    'Earth',
+                    'Jupiter',
+                    'Mars',
+                ],
+                ans: 'Mars',
+            },
+            {
+                ques: 'What is the chemical symbol for Gold?',
+                mcq: [
+                    'Ag',
+                    'Au',
+                    'Cu',
+                    'Fe',
+                ],
+                ans: 'Au',
+            },
+            {
+                ques: 'What is the powerhouse of the cell?',
+                mcq: [
+                    'Tissues',
+                    'Mitochondria',
+                    'Golgi Apparatus',
+                    'Nucleus',
+                ],
+                ans: 'Mitochondria',
+            },
+        ];
+
+        function start() {
+            quizContainer.innerHTML = "";
+            makeElement();
+        }
+
+        function makeElement() {
+            var h1 = document.createElement("h1");
+            h1.innerHTML = currentIndex + 1 + ". " + questions[currentIndex].ques;
+            quizContainer.appendChild(h1);
+            questions[currentIndex].mcq.forEach((element, index) => {
+                var input = document.createElement("input");
+                input.setAttribute("type", "radio");
+                input.setAttribute("name", "quiz");
+                input.setAttribute("id", index);
+                input.value = element;
+                var label = document.createElement("label");
+                label.innerHTML = element;
+                var br = document.createElement("br");
+                quizContainer.appendChild(input);
+                quizContainer.appendChild(label);
+                quizContainer.appendChild(br);
+            })
+            var breakAfterOptions = document.createElement("br");
+            quizContainer.appendChild(breakAfterOptions);
+
+            var button = document.createElement("button");
+            if (currentIndex < questions.length - 1) {
+                button.innerHTML = "Next";
+                button.addEventListener("click", next);
+                button.style.backgroundColor = "tan";
+            } else {
+                button.innerHTML = "Submit Quiz";
+                button.addEventListener("click", end);
+                button.style.backgroundColor = "tan";
+            }
+
+            quizContainer.appendChild(button);
+        }
+
+        function next() {
+            for (var i = 0; i < questions[currentIndex].mcq.length; i++) {
+                var data = document.getElementById(i);
+                if (data.checked && data.value == questions[currentIndex].ans) {
+                    correct++;
+                }
+            }
+            currentIndex++;
+            start(); 
+        }
+
+        function end() {
+            for (var i = 0; i < questions[currentIndex].mcq.length; i++) {
+                var data = document.getElementById(i);
+                if (data.checked && data.value == questions[currentIndex].ans) {
+                    correct++;
+                }
+            }
+            quizContainer.innerHTML = "";
+            var h1 = document.createElement("h1");
+            h1.innerHTML = "Score";
+            var head = document.createElement("h1");
+            head.innerHTML = correct;
+            var h2 = document.createElement("h2");
+            h2.innerHTML = "Well, not satisfied with the result? Click the button below to test yourself again";
+            var button = document.createElement("button");
+            button.innerHTML = "Start quiz again";
+            button.style.backgroundColor = "tan";
+            button.setAttribute("onclick", "start()");
+            currentIndex = 0;
+            correct = 0;
+            quizContainer.appendChild(h1);
+            quizContainer.appendChild(head);
+            quizContainer.appendChild(h2);
+            quizContainer.appendChild(button);
+        }
+    </script>
+</body>
+
+</html>
